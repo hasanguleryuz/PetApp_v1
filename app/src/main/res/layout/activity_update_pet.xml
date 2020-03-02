@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#CDE8F4"
+    android:orientation="vertical"
+    tools:context=".UpdatePet">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/edit_text_shape"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <EditText
+                android:id="@+id/et_ownerName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Sahibinin ismi..." />
+
+            <EditText
+                android:id="@+id/et_ownerTelNo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Sahibinin numarası..."
+                android:inputType="phone"
+                android:maxLength="11" />
+
+            <EditText
+                android:id="@+id/et_ownerAddress"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Sahibinin adresi..." />
+
+            <EditText
+                android:id="@+id/et_petName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Evcil hayvanınızın ismi..." />
+
+            <EditText
+                android:id="@+id/et_petGenus"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Evcil hayvanınızın cinsi..." />
+
+            <EditText
+                android:id="@+id/et_petBirthyear"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Hayvanınızın doğum yılı(dd/MM/yyyy)..."
+                android:inputType="date" />
+        </LinearLayout>
+        <RadioGroup
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:id="@+id/rg_gender">
+            <RadioButton
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Erkek"
+                android:id="@+id/rb_male"/>
+            <RadioButton
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Dişi"
+                android:id="@+id/rb_female"/>
+
+        </RadioGroup>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center">
+        <Button
+            android:background="@drawable/edit_button_shape"
+            android:layout_margin="8dp"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:text="Hayvanı Güncelle"
+            android:id="@+id/btn_updatePet"/>
+    </LinearLayout>
+</LinearLayout>

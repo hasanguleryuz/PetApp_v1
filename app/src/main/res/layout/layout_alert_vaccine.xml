@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:background="@drawable/edit_alert_shape"
+    android:layout_height="match_parent">
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="Aşının son durumu "
+        android:gravity="center"
+        android:textColor="#E2000000"
+        android:textSize="30dp"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/btn_yes"
+            android:background="@drawable/edit_button_shape"
+            android:text="Yapıldı"/>
+        <Button
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/btn_no"
+            android:background="@drawable/edit_button_shape"
+            android:text="Yapılmadı"/>
+        <Button
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Aşıyı Sil"
+            android:background="@drawable/edit_button_shape"
+            android:id="@+id/btn_deleteVaccine"/>
+    </LinearLayout>
+</LinearLayout>

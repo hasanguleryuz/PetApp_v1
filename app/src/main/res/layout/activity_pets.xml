@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:background="#CDE8F4"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".PetsActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@drawable/edit_text_shape">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Sahibinin ismi..."
+                android:id="@+id/et_ownerName"/>
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Sahibinin numarası..."
+                android:inputType="phone"
+                android:maxLength="11"
+                android:id="@+id/et_ownerTelNo"/>
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Sahibinin adresi..."
+                android:id="@+id/et_ownerAddress"/>
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Evcil hayvanınızın ismi..."
+                android:id="@+id/et_petName"/>
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Evcil hayvanınızın cinsi..."
+                android:id="@+id/et_petGenus"/>
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="date"
+                android:hint="Hayvanınızın doğum yılı(dd/MM/yyyy)..."
+                android:id="@+id/et_petBirthyear"/>
+        </LinearLayout>
+
+        <RadioGroup
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:id="@+id/rg_gender">
+            <RadioButton
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Erkek"
+                android:id="@+id/rb_male"/>
+            <RadioButton
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Dişi"
+                android:id="@+id/rb_female"/>
+
+        </RadioGroup>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center">
+        <Button
+            android:background="@drawable/edit_button_shape"
+            android:layout_margin="8dp"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:text="Hayvanı Ekle"
+            android:id="@+id/btn_addPet"/>
+    </LinearLayout>
+    <TextView
+        android:padding="15dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        android:textSize="20dp"
+        android:text="                        -Hayvanlarım-"/>
+
+    <ListView
+        android:paddingTop="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/lv_petList"/>
+
+</LinearLayout>
