@@ -1,6 +1,7 @@
 This app created by Hasan Güleryüz.
 This app is my second android app. 
 PetApp_v0 application has been updated and designed for veterinarians.
+This app appeals to veterinarians.
 I am not designer so I made a simple design. 
 By using this program, you can keep the information of pet owners and pets on your phone.
 Also you can call the owner and send message with use this application.  
