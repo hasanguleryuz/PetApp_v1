@@ -5,7 +5,9 @@ import io.realm.RealmObject;
 
 public class Pet extends RealmObject {
 
+    private long id;
     private String petName;
+
     private String petGenus;
     private String petGender;
     private String petBirthyear;
@@ -13,6 +15,14 @@ public class Pet extends RealmObject {
     private String ownerTelNo;
     private String ownerAddress;
     private RealmList<Vaccine> petVaccines;
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
 
     public String getOwnerName() {
         return ownerName;

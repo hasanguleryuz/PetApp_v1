@@ -3,7 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:background="#CDE8F4"
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".PetsActivity">
@@ -11,94 +10,167 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:background="@drawable/edit_text_shape">
+        android:layout_margin="5dp"
+        android:background="@drawable/edit_text_shape"
+        android:orientation="vertical">
+
         <LinearLayout
+            android:layout_marginLeft="7dp"
+            android:layout_marginRight="7dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+
             <EditText
+                android:id="@+id/et_ownerName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Sahibinin ismi..."
-                android:id="@+id/et_ownerName"/>
+                android:hint="Sahibinin ismi..." />
+
             <EditText
+                android:id="@+id/et_ownerTelNo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Sahibinin numarası..."
                 android:inputType="phone"
-                android:maxLength="11"
-                android:id="@+id/et_ownerTelNo"/>
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Sahibinin adresi..."
-                android:id="@+id/et_ownerAddress"/>
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Evcil hayvanınızın ismi..."
-                android:id="@+id/et_petName"/>
+                android:maxLength="11" />
 
             <EditText
+                android:id="@+id/et_ownerAddress"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Evcil hayvanınızın cinsi..."
-                android:id="@+id/et_petGenus"/>
+                android:hint="Sahibinin adresi..." />
 
             <EditText
+                android:id="@+id/et_petName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="date"
-                android:hint="Hayvanınızın doğum yılı(dd/MM/yyyy)..."
-                android:id="@+id/et_petBirthyear"/>
+                android:hint="Evcil hayvanın ismi..." />
+
+            <EditText
+                android:id="@+id/et_petGenus"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Evcil hayvanın cinsi..." />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/et_petBirthyear"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="3"
+                    android:hint="Hayvanın doğum yılı(dd/MM/yyyy)..."
+                    android:inputType="date" />
+
+                <Button
+                    android:id="@+id/btn_defineDate"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/hover_button"
+                    android:text="Tarih Seç" />
+            </LinearLayout>
         </LinearLayout>
 
         <RadioGroup
-            android:gravity="center"
+            android:id="@+id/rg_gender"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:id="@+id/rg_gender">
+            android:layout_marginLeft="5dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+
             <RadioButton
-                android:layout_weight="1"
+                android:id="@+id/rb_male"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="Erkek"
-                android:id="@+id/rb_male"/>
-            <RadioButton
                 android:layout_weight="1"
+                android:text="Erkek" />
+
+            <RadioButton
+                android:id="@+id/rb_female"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="Dişi"
-                android:id="@+id/rb_female"/>
+                android:layout_weight="1"
+                android:text="Dişi" />
 
         </RadioGroup>
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center">
+
         <Button
-            android:background="@drawable/edit_button_shape"
-            android:layout_margin="8dp"
+            android:id="@+id/btn_addPet"
             android:layout_width="120dp"
             android:layout_height="wrap_content"
-            android:text="Hayvanı Ekle"
-            android:id="@+id/btn_addPet"/>
+            android:layout_margin="8dp"
+            android:background="@drawable/hover_button"
+            android:text="Hayvanı Ekle" />
     </LinearLayout>
-    <TextView
-        android:padding="15dp"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textStyle="bold"
-        android:textSize="20dp"
-        android:text="                        -Hayvanlarım-"/>
+        android:layout_height="match_parent">
 
-    <ListView
-        android:paddingTop="5dp"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/lv_petList"/>
+        <LinearLayout
+            android:id="@+id/l_footer"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_alignParentBottom="true"
+            android:layout_gravity="bottom"
+            android:background="@color/footerColor"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:id="@+id/footer_calendar"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center">
+
+                <TextView
+                    android:layout_width="25dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="5dp"
+                    android:background="@drawable/hover_calendar" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/footer_home"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center">
+
+                <TextView
+                    android:layout_width="25dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:background="@drawable/hover_home" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/footer_list"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:background="@drawable/hover_list" />
+            </LinearLayout>
+        </LinearLayout>
+
+    </RelativeLayout>
 
 </LinearLayout>

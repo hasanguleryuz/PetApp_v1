@@ -3,25 +3,28 @@ package com.example.petapp_v0;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.text.DateFormat;
+import com.example.petapp_v0.Adapter.VaccineAdapter;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Queue;
+import java.util.Calendar;
 
 import io.realm.Realm;
 import io.realm.RealmList;
@@ -35,18 +38,24 @@ public class PetActivity extends AppCompatActivity {
     EditText et_vaccineType, et_vaccineDate;
     String s_vaccineDate, s_vaccineStatus, s_vaccineType;
     ListView lv_vaccineList;
-    Button btn_addVaccine,btn_call,btn_message;
+    LinearLayout btn_call,btn_message,btn_whatsapp;
+    Button btn_defineDate,btn_addVaccine;
+    LinearLayout footer_home, footer_calendar, footer_list;
     int position;
+    long id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pet);
         defineElements();
+        idGenerator();
         loadData();
         loadPetInfoToRealm();
         clickVaccineToOnListView();
         clickBtnCallAndMessage();
+        openDatePicker();
+        clickFooterButtons();
     }
 
     private void defineElements() {
@@ -66,8 +75,46 @@ public class PetActivity extends AppCompatActivity {
         btn_addVaccine = findViewById(R.id.btn_addVaccine);
         btn_call = findViewById(R.id.btn_call);
         btn_message = findViewById(R.id.btn_message);
+        btn_defineDate = findViewById(R.id.btn_defineDate);
+        btn_whatsapp = findViewById(R.id.btn_whatsapp);
+        footer_calendar = findViewById(R.id.footer_calendar);
+        footer_home = findViewById(R.id.footer_home);
+        footer_list = findViewById(R.id.footer_list);
+    }
+    private void clickFooterButtons(){
+        footer_list.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                passPetListActivity();
+            }
+        });
+        footer_calendar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                passVaccineListActivity();
+            }
+        });
+        footer_home.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                passMainActivity();
+            }
+        });
     }
 
+    private void passMainActivity(){
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+    }
+
+    private void passPetListActivity(){
+        Intent intent = new Intent(this, PetListActivity.class);
+        startActivity(intent);
+    }
+    private void passVaccineListActivity(){
+        Intent intent = new Intent(this,VaccineListActivity.class);
+        startActivity(intent);
+    }
     private void loadData() {
         Bundle intent = getIntent().getExtras();
         position = intent.getInt("Position");
@@ -85,14 +132,20 @@ public class PetActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 loadVaccineInfo();
-                if(isValidDate(s_vaccineDate)){
-                    recordVaccineInfo();
-                    et_vaccineDate.setText("");
-                    et_vaccineType.setText("");
+                if(!s_vaccineDate.equals("") && !s_vaccineType.equals("")){
+                    if(isValidDate(s_vaccineDate)){
+                        recordVaccineInfo();
+                        et_vaccineDate.setText("");
+                        et_vaccineType.setText("");
+                    }
+                    else{
+                        Toast.makeText(getApplicationContext(),"Lütfen aşı tarihini doğru şekilde giriniz(dd/MM/yyyy).",Toast.LENGTH_SHORT).show();
+                    }
                 }
-                else{
-                    Toast.makeText(getApplicationContext(),"Lütfen aşı tarihini doğru şekilde giriniz(dd/MM/yyyy).",Toast.LENGTH_SHORT).show();
+                else {
+                    Toast.makeText(getApplicationContext(),"Lütfen bütün boşlukları tam bir şekilde doldurunuz.",Toast.LENGTH_SHORT).show();
                 }
+                idGenerator();
             }
         });
         showVaccine();
@@ -196,7 +249,7 @@ public class PetActivity extends AppCompatActivity {
             public void execute(Realm realm) {
                 Pet pet = pets.get(position);
                 RealmList<Vaccine> vaccines = pet.getPetVaccines();
-                vaccines.get(positionVaccine).setVaccineResult(((RadioButton) (findViewById(R.id.rb_done))).getText().toString());
+                vaccines.get(positionVaccine).setVaccineResult("Yapıldı");
                 pet.setPetVaccines(vaccines);
             }
         });
@@ -209,7 +262,7 @@ public class PetActivity extends AppCompatActivity {
             public void execute(Realm realm) {
                 Pet pet = pets.get(position);
                 RealmList<Vaccine> vaccines = pet.getPetVaccines();
-                vaccines.get(positionVaccine).setVaccineResult(((RadioButton) (findViewById(R.id.rb_notDone))).getText().toString());
+                vaccines.get(positionVaccine).setVaccineResult("Yapılmadı");
                 pet.setPetVaccines(vaccines);
             }
         });
@@ -244,5 +297,57 @@ public class PetActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        btn_whatsapp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+                String url = "https://api.whatsapp.com/send?phone=+90 " + telno;
+                try {
+                    PackageManager pm = PetActivity.this.getPackageManager();
+                    pm.getPackageInfo("com.whatsapp", PackageManager.GET_ACTIVITIES);
+                    Intent i = new Intent(Intent.ACTION_VIEW);
+                    i.setData(Uri.parse(url));
+                    startActivity(i);
+                } catch (PackageManager.NameNotFoundException e) {
+                    Toast.makeText(getApplicationContext(), "Whatsapp telefonunuzda yüklü değil", Toast.LENGTH_SHORT).show();
+                    e.printStackTrace();
+                }
+
+            }
+        });
     }
+    private void openDatePicker(){
+        btn_defineDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final Calendar calendar = Calendar.getInstance();
+                int year = calendar.get(Calendar.YEAR);
+                int month = calendar.get(Calendar.MONTH);
+                int day = calendar.get(Calendar.DAY_OF_MONTH);
+
+                DatePickerDialog dpd = new DatePickerDialog(PetActivity.this,
+                        new DatePickerDialog.OnDateSetListener() {
+                            @Override
+                            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                                month += 1;
+                                et_vaccineDate.setText(dayOfMonth + "/" + month + "/" + year);
+                            }
+                        }, year, month, day);
+                dpd.setButton(DatePickerDialog.BUTTON_POSITIVE, "Seç", dpd);
+                dpd.setButton(DatePickerDialog.BUTTON_NEGATIVE, "İptal", dpd);
+                dpd.show();
+            }
+        });
+    }
+    private void idGenerator(){
+        if (pets.get(position).getPetVaccines().size() <= 0){
+            id = 0;
+        }
+        else {
+            id =  pets.get(position).getPetVaccines().get(pets.get(position).getPetVaccines().size()-1).getId() + 1;
+        }
+    }
+
+
 }

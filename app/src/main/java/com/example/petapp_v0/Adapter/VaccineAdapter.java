@@ -1,4 +1,4 @@
-package com.example.petapp_v0;
+package com.example.petapp_v0.Adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -6,6 +6,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
+
+import com.example.petapp_v0.R;
+import com.example.petapp_v0.Vaccine;
 
 import org.w3c.dom.Text;
 

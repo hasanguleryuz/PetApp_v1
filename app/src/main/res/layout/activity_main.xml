@@ -4,46 +4,148 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#CDE8F4"
     android:orientation="vertical"
     tools:context=".MainActivity">
 
 
     <LinearLayout
-        android:padding="20dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:layout_marginTop="50dp"
-        >
+        android:layout_margin="7dp">
+
+        <TextView
+            android:gravity="center"
+            android:textColor="#000"
+            android:id="@+id/tv_date"
+            android:layout_width="match_parent"
+            android:textSize="20dp"
+            android:layout_height="50dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="40dp"
+            android:layout_marginRight="20dp"
+            android:background="@drawable/edit_text_shape"
+            android:textStyle="italic" />
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="15dp"
+        android:layout_marginRight="45dp"
+        android:layout_marginLeft="45dp"
+        android:background="@drawable/edit_text_shape"
+        android:orientation="vertical">
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="PETAPP"
+            android:layout_gravity="center"
+            android:padding="5dp"
+            android:text="-Bugün Yapılacaklar-"
             android:textColor="#000"
-            android:textSize="40dp" />
+            android:textSize="19dp" />
+
+        <ListView
+            android:id="@+id/lv_nowVaccineList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="8dp">
+
+        </ListView>
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:gravity="center"
         android:orientation="vertical">
 
         <Button
-            android:id="@+id/btn_addPet"
-            android:layout_width="150dp"
+            android:id="@+id/btn_petList"
+            android:layout_width="180dp"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
-            android:background="@drawable/edit_button_shape"
-            android:text="Evcil Hayvan Ekle ve Listele" />
+            android:background="@drawable/hover_button"
+            android:text="Evcil HAyvan Listesi" />
+
+        <Button
+            android:id="@+id/btn_addPet"
+            android:layout_width="160dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:background="@drawable/hover_button"
+            android:text="Evcil Hayvan Ekle" />
 
         <Button
             android:id="@+id/btn_vaccineList"
-            android:layout_width="wrap_content"
+            android:layout_width="130dp"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
-            android:background="@drawable/edit_button_shape"
+            android:background="@drawable/hover_button"
             android:text="Aşı Listesi" />
     </LinearLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:id="@+id/lv_footer"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_alignParentBottom="true"
+            android:layout_gravity="bottom"
+            android:background="@color/footerColor"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:id="@+id/footer_calendar"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center">
+
+                <TextView
+                    android:id="@+id/tv_calendar"
+                    android:layout_width="25dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="5dp"
+                    android:background="@drawable/hover_calendar" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/footer_home"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center">
+
+                <TextView
+                    android:id="@+id/tv_home"
+                    android:layout_width="25dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:background="@drawable/hover_home" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/footer_list"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center">
+
+                <TextView
+                    android:id="@+id/tv_list"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:background="@drawable/hover_list" />
+            </LinearLayout>
+        </LinearLayout>
+
+    </FrameLayout>
 </LinearLayout>

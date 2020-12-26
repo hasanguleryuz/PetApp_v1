@@ -2,10 +2,19 @@ package com.example.petapp_v0;
 
 import io.realm.RealmObject;
 
-public class Vaccine extends RealmObject{
+public class Vaccine extends RealmObject {
+    long id;
     private String vaccineType;
     private String vaccineDate;
     private String vaccineResult;
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
 
     public String getVaccineType() {
         return vaccineType;

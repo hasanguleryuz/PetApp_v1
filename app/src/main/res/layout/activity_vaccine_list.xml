@@ -2,38 +2,190 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activityRoot"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#CDE8F4"
     android:orientation="vertical"
     tools:context=".VaccineListActivity">
 
-    <EditText
-        android:id="@+id/et_vaccineDay"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:inputType="number"
-        android:layout_height="wrap_content"
-        android:hint="Kaç günlük aşı kontrolü yapılacak?" />
+        android:layout_height="wrap_content">
 
-    <Button
-        android:id="@+id/btn_showVaccineList"
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text=""
+            android:textColor="#000"
+            android:textSize="20dp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/edit_button_shape"
-        android:gravity="center"
-        android:text="Aşıları göster" />
+        android:layout_margin="4dp"
+        android:background="@drawable/edit_text_shape"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:orientation="horizontal">
 
-    <TextView
+        <EditText
+            android:id="@+id/et_vaccineDay"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:layout_weight="7"
+            android:hint="Kaç günlük aşı kontrolü yapılacak?"
+            android:inputType="number" />
+
+        <Button
+            android:id="@+id/btn_showVaccineList"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="5dp"
+            android:layout_weight="2"
+            android:background="@drawable/hover_button"
+            android:gravity="center"
+            android:paddingLeft="9dp"
+            android:paddingRight="9dp"
+            android:text="Aşıları göster" />
+    </LinearLayout>
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="-Aşı Listesi-"
-        android:textColor="#E2000000"
-        android:textSize="22dp" />
+        android:layout_marginLeft="9dp"
+        android:layout_marginRight="9dp"
+        android:orientation="horizontal">
 
-    <ListView
-        android:id="@+id/lv_vaccineList"
+        <Button
+            android:id="@+id/btn_showNow"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="5dp"
+            android:layout_weight="2"
+            android:background="@drawable/hover_button"
+            android:gravity="center"
+            android:paddingLeft="9dp"
+            android:paddingRight="9dp"
+            android:text="Bugün" />
+
+        <Button
+            android:id="@+id/btn_showTmorrow"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="5dp"
+            android:layout_weight="2"
+            android:background="@drawable/hover_button"
+            android:gravity="center"
+            android:paddingLeft="9dp"
+            android:paddingRight="9dp"
+            android:text="Yarın" />
+
+        <Button
+            android:id="@+id/btn_showWeek"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="5dp"
+            android:layout_weight="2"
+            android:background="@drawable/hover_button"
+            android:gravity="center"
+            android:paddingLeft="9dp"
+            android:paddingRight="9dp"
+            android:text="Bu Hafta" />
+
+        <Button
+            android:id="@+id/btn_defineDate"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="5dp"
+            android:layout_weight="2"
+            android:background="@drawable/hover_button"
+            android:paddingLeft="9dp"
+            android:paddingRight="9dp"
+            android:text="Tarih Seç" />
+    </LinearLayout>
+
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/l_footer">
+
+            <ListView
+                android:id="@+id/lv_vaccineList"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="8dp"
+                android:listSelector="@android:color/transparent" />
+        </FrameLayout>
+
+        <LinearLayout
+            android:id="@+id/l_footer"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_alignParentBottom="true"
+            android:layout_gravity="bottom"
+            android:background="@color/footerColor"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:id="@+id/footer_calendar"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center">
+
+                <TextView
+                    android:id="@+id/tv_calendar"
+                    android:layout_width="25dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="5dp"
+                    android:background="@drawable/hover_calendar" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/footer_home"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center">
+
+                <TextView
+                    android:id="@+id/tv_home"
+                    android:layout_width="25dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:background="@drawable/hover_home" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/footer_list"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center">
+
+                <TextView
+                    android:id="@+id/tv_list"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:background="@drawable/hover_list" />
+            </LinearLayout>
+        </LinearLayout>
+
+    </RelativeLayout>
 
 </LinearLayout>

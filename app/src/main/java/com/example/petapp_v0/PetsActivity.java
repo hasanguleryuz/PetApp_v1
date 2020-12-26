@@ -1,30 +1,27 @@
 package com.example.petapp_v0;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ListView;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
 import io.realm.Realm;
 import io.realm.RealmList;
 import io.realm.RealmResults;
+
+import java.util.Calendar;
+import android.app.DatePickerDialog;
+import android.widget.DatePicker;
 
 public class PetsActivity extends AppCompatActivity {
 
@@ -32,25 +29,26 @@ public class PetsActivity extends AppCompatActivity {
     RealmResults<Pet> pets;
     EditText et_petName, et_petGenus, et_petBirthyear, et_ownerName, et_ownerAddress, et_ownerTelNo;
     RadioGroup rg_gender;
-    Button btn_addPet;
-    ListView lv_petList;
+    Button btn_addPet,btn_defineDate;
     String s_petName, s_petGenus, s_petBirthyear, s_petGender, s_ownerName, s_ownerAddress, s_ownerTelNo;
     RealmList<Vaccine> vaccineList;
+    LinearLayout footer_home, footer_calendar, footer_list;
+    long id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pets);
         defineElements();
+        idGenerator();
         loadPetInfoToRealm();
-        clickPetToOnListView();
-
+        openDatePicker();
+        clickFooterButtons();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        showPets();
     }
 
     private void defineElements() {
@@ -64,32 +62,70 @@ public class PetsActivity extends AppCompatActivity {
         et_ownerTelNo = findViewById(R.id.et_ownerTelNo);
         rg_gender = findViewById(R.id.rg_gender);
         btn_addPet = findViewById(R.id.btn_addPet);
-        lv_petList = findViewById(R.id.lv_petList);
+        btn_defineDate = findViewById(R.id.btn_defineDate);
+        footer_calendar = findViewById(R.id.footer_calendar);
+        footer_home = findViewById(R.id.footer_home);
+        footer_list = findViewById(R.id.footer_list);
+    }
+    private void clickFooterButtons(){
+        footer_list.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                passPetListActivity();
+            }
+        });
+        footer_calendar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                passVaccineListActivity();
+            }
+        });
+        footer_home.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                passMainActivity();
+            }
+        });
+    }
+    private void passMainActivity(){
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
     }
 
+    private void passPetListActivity(){
+        Intent intent = new Intent(this, PetListActivity.class);
+        startActivity(intent);
+    }
+    private void passVaccineListActivity(){
+        Intent intent = new Intent(this,VaccineListActivity.class);
+        startActivity(intent);
+    }
     private void loadPetInfoToRealm() {
         btn_addPet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 loadPetInfo();
-                if (isValidDate(s_petBirthyear)) {
-                    recordPetInfo();
-                    et_petBirthyear.setText("");
-                    et_petGenus.setText("");
-                    et_petName.setText("");
-                    et_ownerAddress.setText("");
-                    et_ownerName.setText("");
-                    et_ownerTelNo.setText("");
-                } else {
-                    Toast.makeText(getApplicationContext(), "Lütfen hayvanınız doğum tarihini doğru şekilde giriniz(dd/MM/yyyy)", Toast.LENGTH_SHORT).show();
+                if(!s_ownerName.equals("") && !s_petName.equals("") && !s_ownerAddress.equals("") && !s_petGenus.equals("") && !s_ownerTelNo.equals("") && !s_petBirthyear.equals("") && !s_petGender.equals("")){
+                    if (isValidDate(s_petBirthyear)) {
+                        recordPetInfo();
+                        et_petBirthyear.setText("");
+                        et_petGenus.setText("");
+                        et_petName.setText("");
+                        et_ownerAddress.setText("");
+                        et_ownerName.setText("");
+                        et_ownerTelNo.setText("");
+                        passPetActivity();
+                    } else {
+                        Toast.makeText(getApplicationContext(), "Lütfen hayvanınız doğum tarihini doğru şekilde giriniz(dd/MM/yyyy)", Toast.LENGTH_SHORT).show();
+                    }
+                }
+                else {
+                    Toast.makeText(getApplicationContext(),"Lütfen bütün boşlukları tam bir şekilde doldurunuz.",Toast.LENGTH_SHORT).show();
                 }
             }
         });
-        showPets();
 
     }
-
-
     private void loadPetInfo() {
         s_ownerAddress = et_ownerAddress.getText().toString();
         s_ownerName = et_ownerName.getText().toString();
@@ -97,126 +133,43 @@ public class PetsActivity extends AppCompatActivity {
         s_petName = et_petName.getText().toString();
         s_petGenus = et_petGenus.getText().toString();
         s_petBirthyear = et_petBirthyear.getText().toString();
-        s_petGender = ((RadioButton) findViewById(rg_gender.getCheckedRadioButtonId())).getText().toString();
+        if(rg_gender.getCheckedRadioButtonId() != -1){
+            s_petGender = ((RadioButton) findViewById(rg_gender.getCheckedRadioButtonId())).getText().toString();
+        }
+        else {
+            s_petGender = "";
+        }
         vaccineList = new RealmList<>();
     }
 
     private void recordPetInfo() {
-        realm.executeTransactionAsync(new Realm.Transaction() {
-            @Override
-            public void execute(Realm realm) {
-                Pet pet = realm.createObject(Pet.class);
-                pet.setOwnerAddress(s_ownerAddress);
-                pet.setOwnerName(s_ownerName);
-                pet.setOwnerTelNo(s_ownerTelNo);
-                pet.setPetName(s_petName);
-                pet.setPetGender(s_petGender);
-                pet.setPetBirthyear(s_petBirthyear);
-                pet.setPetGenus(s_petGenus);
-                pet.setPetVaccines(vaccineList);
-            }
-        }, new Realm.Transaction.OnSuccess() {
-            @Override
-            public void onSuccess() {
-                Toast.makeText(getApplicationContext(), "Hayvanınız başarılı bir şekilde eklendi", Toast.LENGTH_SHORT).show();
-                showPets();
-            }
-        }, new Realm.Transaction.OnError() {
-            @Override
-            public void onError(Throwable error) {
-                Toast.makeText(getApplicationContext(), "Hayvanınız bir hatadan dolayı eklenemedi", Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
 
-    private void showPets() {
-        PetAdapter petAdapter = new PetAdapter(getApplicationContext(), pets, this);
-        lv_petList.setAdapter(petAdapter);
+            realm.executeTransactionAsync(new Realm.Transaction() {
+                @Override
+                public void execute(Realm realm) {
+                    Pet pet = realm.createObject(Pet.class);
+                    pet.setId(id);
+                    pet.setOwnerAddress(s_ownerAddress);
+                    pet.setOwnerName(s_ownerName);
+                    pet.setOwnerTelNo(s_ownerTelNo);
+                    pet.setPetName(s_petName);
+                    pet.setPetGender(s_petGender);
+                    pet.setPetBirthyear(s_petBirthyear);
+                    pet.setPetGenus(s_petGenus);
+                    pet.setPetVaccines(vaccineList);
+                }
+            }, new Realm.Transaction.OnSuccess() {
+                @Override
+                public void onSuccess() {
+                    Toast.makeText(getApplicationContext(), "Hayvanınız başarılı bir şekilde eklendi", Toast.LENGTH_SHORT).show();
 
-    }
-
-    private void clickPetToOnListView() {
-        lv_petList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                selectionAlertDialogOpen(position);
-                return true;
-            }
-        });
-        lv_petList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(getApplicationContext(), PetActivity.class);
-                intent.putExtra("Position", position);
-                startActivity(intent);
-            }
-        });
-
-    }
-
-    private void selectionAlertDialogOpen(final int position) {
-        LayoutInflater inflater = getLayoutInflater();
-        View view = inflater.inflate(R.layout.layout_long_click_selection, null);
-        AlertDialog.Builder alert = new AlertDialog.Builder(this);
-        Button btn_delete = view.findViewById(R.id.btn_delete);
-        Button btn_update = view.findViewById(R.id.btn_update);
-        alert.setView(view);
-        alert.setCancelable(true);
-        final AlertDialog dialog = alert.create();
-        btn_delete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                alertDialogOpen(position);
-                dialog.cancel();
-            }
-        });
-        btn_update.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), UpdatePet.class);
-                intent.putExtra("Position", position);
-                startActivity(intent);
-                dialog.cancel();
-            }
-        });
-        dialog.show();
-    }
-
-    private void alertDialogOpen(final int position) {
-        LayoutInflater inflater = getLayoutInflater();
-        View view = inflater.inflate(R.layout.layout_alert, null);
-        AlertDialog.Builder alert = new AlertDialog.Builder(this);
-        Button btn_yes = view.findViewById(R.id.btn_yes);
-        Button btn_no = view.findViewById(R.id.btn_no);
-        alert.setView(view);
-        alert.setCancelable(false);
-
-        final AlertDialog dialog = alert.create();
-        btn_yes.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                deletePet(position);
-                dialog.cancel();
-            }
-        });
-        btn_no.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.cancel();
-            }
-        });
-        dialog.show();
-    }
-
-    private void deletePet(final int position) {
-        realm.executeTransaction(new Realm.Transaction() {
-            @Override
-            public void execute(Realm realm) {
-                Pet pet = pets.get(position);
-                pet.deleteFromRealm();
-                showPets();
-            }
-        });
+                }
+            }, new Realm.Transaction.OnError() {
+                @Override
+                public void onError(Throwable error) {
+                    Toast.makeText(getApplicationContext(), "Hayvanınız bir hatadan dolayı eklenemedi", Toast.LENGTH_SHORT).show();
+                }
+            });
     }
 
     private boolean isValidDate(String inDate) {
@@ -228,6 +181,44 @@ public class PetsActivity extends AppCompatActivity {
             return false;
         }
         return true;
+    }
+
+    private void openDatePicker(){
+        btn_defineDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final Calendar calendar = Calendar.getInstance();
+                int year = calendar.get(Calendar.YEAR);
+                int month = calendar.get(Calendar.MONTH);
+                int day = calendar.get(Calendar.DAY_OF_MONTH);
+
+                DatePickerDialog dpd = new DatePickerDialog(PetsActivity.this,
+                        new DatePickerDialog.OnDateSetListener() {
+                            @Override
+                            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                                month += 1;
+                                et_petBirthyear.setText(dayOfMonth + "/" + month + "/" + year);
+                            }
+                        }, year, month, day);
+                dpd.setButton(DatePickerDialog.BUTTON_POSITIVE, "Seç", dpd);
+                dpd.setButton(DatePickerDialog.BUTTON_NEGATIVE, "İptal", dpd);
+                dpd.show();
+            }
+        });
+    }
+
+    private void passPetActivity(){
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+    }
+
+    private void idGenerator(){
+        if (pets.size() <= 0){
+            id = 0;
+        }
+        else {
+            id =  pets.get(pets.size()-1).getId() + 1;
+        }
     }
 
 }
